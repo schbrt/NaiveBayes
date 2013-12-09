@@ -20,17 +20,12 @@ class AdaBoost:
         sample = np.random.choice(self.train_data, self.train_len, replace = True, p = self.weights)
         return sample
 
-    def error(self):
-        error = 0.0
-        for i in xrange(train_len):
-
-    def update(self, error_rate, classifier):
+    def update(self, classifier):
         alpha = .5 * math.log((1-error_rate)/float(error_rate))
 
         for idx in self.correct_weights:
             mult = math.exp(alpha)
             self.weights[idx] *= mult
-
         for idx in self.incorrect_weights:
             mult = 1/(math.exp(alpha))
             self.weights[idx] *= mult
@@ -48,8 +43,11 @@ class AdaBoost:
         for item in weights:
             item = 1/self.train_len
 
+    def error(self):
+        return sum(self.incorrect_weights)
+
     def test(test_data, pos, neg, cl, error_rate):
-        if error rate < .5:
+        if error_rate < .5:
             test_ret = []
             count = 0
             self.correct_weights = []
@@ -71,6 +69,9 @@ class AdaBoost:
         else:
             self.reset_weights
 
+    def error(self, sample, classifier):
+
+
 args = sys.argv
 train_file = '../' + args[1]
 test_file = '../' + args[2]
@@ -78,13 +79,14 @@ test_file = '../' + args[2]
 
 train_data = NB.read(train_file)
 AB = AdaBoost(train_data)
-
+error_rate = 0
 #ye olde iteration begins here
-#create sample data set
-sample = AB.sample()
-#build classifier
-pos, neg, cl = NB.train(sample)
+for i in xrange(20):
+    #create sample data set
+    sample = AB.sample()
+    #build classifier
+    pos, neg, cl = NB.train(sample)
 
-ab.test(sample, pos, neg, cl, error_rate)
+    ab.test(sample, pos, neg, cl, error_rate)
 
 
