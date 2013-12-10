@@ -28,6 +28,11 @@ class AdaBoost:
             ret.append(choice)
         return ret
 
+    """
+    Numpy was being a piece of shit, so I wrote a work around.  If it can successfully use np.random.choice
+    for a data set, it does in the interest of speed (especially important for a1a dataset).  If not, it uses my random
+    picker, which is much slower but works, which has to be worth something. Maybe.
+    """
     def sample_picker(self, train_file):
         if 'cancer' in train_file or 'poker' in train_file:
             return self.sample()
